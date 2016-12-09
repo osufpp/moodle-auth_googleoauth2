@@ -16,7 +16,7 @@
 
 require_once($CFG->dirroot . '/auth/googleoauth2/vendor/autoload.php');
 
-class provideroauth2ifsta extends League\OAuth2\Client\Provider\Ifsta {
+class provideroauth2ifsta extends Osufpp\OAuth2\Client\Provider\Ifsta {
 
     // THE VALUES YOU WANT TO CHANGE WHEN CREATING A NEW PROVIDER.
     public $sskstyle = 'ifsta';
