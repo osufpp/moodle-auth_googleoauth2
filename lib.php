@@ -174,3 +174,34 @@ function auth_googleoauth2_render_buttons() {
 
     return $html;
 }
+
+function auth_googleoauth2_get_auth_url($providername = 'ifsta') {
+    global $CFG;
+
+    $cookiename = 'MOODLEGOOGLEOAUTH2_'.$CFG->sessioncookie;
+    $authprovider = '';
+    
+    if (!empty($_COOKIE[$cookiename])) {
+        $authprovider = $_COOKIE[$cookiename];
+    }
+
+    require_once($CFG->dirroot . '/auth/googleoauth2/classes/provider/'.$providername.'.php');
+    // Load the provider plugin.
+    $providerclassname = 'provideroauth2' . $providername;
+    $provider = new $providerclassname();
+    $authurl = $provider->getAuthorizationUrl();
+    set_state_token($providername, $provider->state);
+
+    return $authurl;
+}
+
+function auth_googleoauth2_get_logout_url($providername = 'ifsta') {
+    global $CFG;
+
+    require_once($CFG->dirroot . '/auth/googleoauth2/classes/provider/'.$providername.'.php');
+    // Load the provider plugin.
+    $providerclassname = 'provideroauth2' . $providername;
+    $provider = new $providerclassname();
+
+    return $provider->domain . '/logout?callback='. urlencode($CFG->wwwroot);
+}
