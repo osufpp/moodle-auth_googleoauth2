@@ -101,7 +101,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
         return false;
     }
 
-    public function postlogout_hook() {
+    public function postlogout_hook($user) {
         redirect(auth_googleoauth2_get_logout_url('ifsta'));
     }
 
@@ -209,18 +209,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                         throw new moodle_exception("noaccountyet", "auth_googleoauth2");
                     }
 
-                    // Get following incremented username.
-                    $googleuserprefix = core_text::strtolower(get_config('auth/googleoauth2', 'googleuserprefix'));
-                    $lastusernumber = get_config('auth/googleoauth2', 'lastusernumber');
-                    $lastusernumber = empty($lastusernumber) ? 1 : $lastusernumber + 1;
-                    // Check the user doesn't exist.
-                    $nextuser = $DB->record_exists('user', array('username' => $googleuserprefix.$lastusernumber));
-                    while ($nextuser) {
-                        $lastusernumber++;
-                        $nextuser = $DB->record_exists('user', array('username' => $googleuserprefix.$lastusernumber));
-                    }
-                    set_config('lastusernumber', $lastusernumber, 'auth/googleoauth2');
-                    $username = $googleuserprefix . $lastusernumber;
+                    $username = $useremail;
 
                     // Retrieve more information from the provider.
                     $newuser = new stdClass();
@@ -412,7 +401,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 $PAGE->requires->js_init_code("buttonsCodeOauth2 = '$content';");
                 $PAGE->requires->js(new moodle_url($CFG->wwwroot . "/auth/googleoauth2/script.js"));
             }
-            else {
+            else if ($_GET['moodle_login'] !== '') {
                 redirect(auth_googleoauth2_get_auth_url('ifsta'));
             }
         }
