@@ -401,7 +401,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 $PAGE->requires->js_init_code("buttonsCodeOauth2 = '$content';");
                 $PAGE->requires->js(new moodle_url($CFG->wwwroot . "/auth/googleoauth2/script.js"));
             }
-            else if ($_GET['moodle_login'] !== '') {
+            else if (!isset($_GET['moodle_login'])) {
                 redirect(auth_googleoauth2_get_auth_url('ifsta'));
             }
         }
