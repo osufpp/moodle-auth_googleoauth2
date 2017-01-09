@@ -200,7 +200,7 @@ class auth_plugin_googleoauth2 extends auth_plugin_base {
                 // Get the user.
                 // Don't bother with auth = googleoauth2 because authenticate_user_login() will fail it if it's not 'googleoauth2'.
                 $user = $DB->get_record('user',
-                    array('email' => $useremail, 'deleted' => 0, 'mnethostid' => $CFG->mnet_localhost_id));
+                    array('username' => $useremail, 'deleted' => 0, 'mnethostid' => $CFG->mnet_localhost_id));
 
                 // Create the user if it doesn't exist.
                 if (empty($user)) {
