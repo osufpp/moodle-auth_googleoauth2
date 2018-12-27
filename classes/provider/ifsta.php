@@ -39,6 +39,10 @@ class provideroauth2ifsta extends Osufpp\OAuth2\Client\Provider\Ifsta {
             'redirectUri'   => $CFG->wwwroot .'/auth/googleoauth2/' . $this->name . '_redirect.php',
             'scopes'        => $this->scopes
         ]);
+        
+        // Set domain defined in the parent class to the appropriate one for our environment:
+        $authurl = get_config('auth/googleoauth2', $this->name . 'authurl');
+        if ($authurl) $this->domain = $authurl;
     }
 
     /**
